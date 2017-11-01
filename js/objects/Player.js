@@ -1,37 +1,52 @@
 'use strict';
 
-function Player(ctx, color, initialPosition, facingLeft) {
+function Player(ctx, color, initialPosition, facingLeft, startsLeft) {
     var self = this;
 
     self.ctx = ctx;
 
-    self.speed = 50;
+    self.speed = self.ctx.canvas.width * 0.1;
     self.facingLeft = facingLeft;
+    self.startsLeft = startsLeft;
 
     self.color = color;
 
     self.width = self.ctx.canvas.width * 0.1;
-    self.height = self.ctx.canvas.height * 0.4;
+    self.height = self.ctx.canvas.height * 0.2;
 
     self.x = self.ctx.canvas.width * initialPosition;
     self.y = self.ctx.canvas.height - self.height;
 
-    self.jumpIndex = false;
-    self.maxJumpHeight = self.height - self.ctx.canvas.height * 0.3;
+    self.isJumping = false;
+    self.isFalling = false;
+    self.maxJumpHeight = self.ctx.canvas.height * 0.15;
     self.maxSuperJumpHeight = self.height - self.ctx.canvas.height * 0.6;
-    self.jumpSpeed = 2;
+    self.jumpSpeed = 10;
+
+    self.maxBulletsAtAnyPoint = 5;
+    self.bulletsCount = 0;
 }
 
 Player.prototype.draw = function() {
     var self = this;
 
-    // if jumping
-    // if y not yet at self.maxJump level
-    // y- = y - self.jumpSpeed
-    // else
-    // self.falling = true
-
-    // if self.
+    if (self.isJumping) {
+        self.y = self.y - self.jumpSpeed;
+        if (self.y < self.maxJumpHeight) {
+            self.isJumping = false;
+            self.isFalling = true;
+        }
+    } else if (self.isFalling) {
+        self.y = self.y + self.jumpSpeed;
+        if (self.y > self.ctx.canvas.height - self.height * 1.05) {
+            self.isFalling = false;
+        }
+    }
+    //
+    // } else if (self.isJumping === false || self.y <= self.maxJumpHeight && self.y < self.ctx.canvas.height * 0.2) {
+    //     self.isJumping = false;
+    //     self.y = self.y + self.jumpSpeed;
+    // }
 
     self.ctx.fillStyle = self.color;
     self.ctx.fillRect(self.x, self.y, self.width, self.height);
@@ -41,79 +56,49 @@ Player.prototype.draw = function() {
 Player.prototype.moveRight = function() {
     var self = this;
 
-    self.x = self.x + self.speed;
+    if (self.startsLeft === false) {
+        if (self.x < self.ctx.canvas.width - self.width) {
+            self.x = self.x + self.speed;
+        }
+    } else if (self.startsLeft === true) {
+        if (self.x + self.width < self.ctx.canvas.width) {
+            self.x = self.x + self.speed;
+        }
+    }
 };
-
 
 Player.prototype.moveLeft = function() {
     var self = this;
-
-    self.x = self.x - self.speed;
-};
-
-
-
-Player.prototype.jumpAction = function() {
-
-    var self = this;
-
-    if (self.jumpIndex === true && self.y > self.maxJumpHeight) {
-
-        self.y = self.y - self.jumpSpeed;
-    } else if (self.y >= self.ctx.canvas.height * 0.6) {
-        self.land();
-        self.jumpIndex = true;
-    } else if (self.jumpIndex === false || self.y <= self.maxJumpHeight && self.y < self.ctx.canvas.height * 0.2) {
-        self.jumpIndex = false;
-        self.y = self.y + self.jumpSpeed;
+    if (self.startsLeft === true) {
+        if (self.x > 0) {
+            self.x = self.x - self.speed;
+        }
+    } else if (self.startsLeft === false) {
+        if (self.x > 0) {
+            self.x = self.x - self.speed;
+        }
     }
-
 };
 
-Player.prototype.land = function() {
-    var self = this;
-    clearInterval(self.jumpInterval);
-};
 
 Player.prototype.jump = function() {
     var self = this;
 
-    self.jumpIndex = true;
-    self.jumpInterval = setInterval(function() {
-        self.jumpAction();
-    }, 10);
-    console.log("jump done");
-
+    if (!self.jumping && !self.falling) {
+        self.isJumping = true;
+    }
 };
 
-// Player.prototype.jump = function() {
-//     var self = this;
-//
-//
-//     if (self.jumpIndex === 0 && self.y >= self.maxJumpHeight) {
-//         self.y = self.y - self.jumpSpeed;
-//         console.log("0");
-//         self.jumpIndex++;
-//     } else if (self.jumpIndex === 1 && self.y >= self.maxSuperJumpHeight) {
-//         self.y = self.y - self.jumpSpeed;
-//         console.log("1");
-//         self.jump();
-//         self.jumpIndex++;
-//     } else if (self.jumpIndex === 2 && self.y <= self.maxJumpHeight && self.y >= self.ctx.canvas.height - self.height) {
-//         self.y = self.y + self.jumpSpeed;
-//         self.jumpIndex = 0;
-//         self.maxJumpHeight = self.ctx.canvas.height * 0.4;
-//         console.log("2");
-//     } else {
-//         console.log("none");
-//     }
-//
-// };
+Player.prototype.canShoot = function() {
+    var self = this;
+    if (self.bulletsCount < self.maxBulletsAtAnyPoint) {
+        self.bulletsCount++;
+        return true;
+    }
+};
 
-//
-// Player.prototype.shoot = function() {
-//     var self = this;
-//     self.bullet = new Bullet(self.ctx);
-//     self.bullet.draw();
-//
-// };
+Player.prototype.bulletDone = function() {
+    var self = this;
+
+    self.bulletsCount--;
+};

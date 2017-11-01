@@ -16,10 +16,11 @@ X set HealthBar
 
 
 //// Day 3
-- make characters jump
-- make punch
-- make shoot
-- make collisions
-- loose life
-- learn how to draw images
+X make characters jump
+X make shoot
+X make collisions
+X loose life
+X learn how to draw images
 X make lifebar changing colors
+
+- make collitions with margins

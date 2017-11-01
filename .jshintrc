@@ -3,6 +3,13 @@
   "unused": true,
   "strict": "global",
   "globals": {
-    "console": true
+  "console": true,
+    "Player": true,
+    "Bullet": true,
+    "HealthBar": true,
+    "window": true,
+    "Over": true,
+    "Battle": true,
+    "Splash": true
   }
 }

@@ -1,36 +1,48 @@
 'use strict';
 
-function Bullet(ctx, visible, x, y) {
+function Bullet(ctx, playerWidth, movingLeft, x, y) {
     var self = this;
     self.ctx = ctx;
 
-    self.x = x;
-    self.y = y;
+    self.x = x + (movingLeft ? -10 : playerWidth);
+    self.y = y + self.ctx.canvas.width * 0.02;
 
-    self.speed = 1;
-    self.visible = visible;
+    self.speed = 6;
+    self.movingLeft = movingLeft;
 
-    self.bulletX = self.x + self.speed * self.width;
-    self.bulletY = self.y;
-    self.bulletWidth = self.ctx.canvas.width * 0.1;
-    self.bulletHeight = self.ctx.canvas.height * 0.05;
+    self.width = self.ctx.canvas.width * 0.02;
+    self.height = self.ctx.canvas.height * 0.01;
 }
 
 Bullet.prototype.draw = function() {
     var self = this;
 
+    if (self.movingLeft) {
+        self.x = self.x - self.speed;
+        self.y = self.y;
+        if (self.x < 0) {
+            self.done = true;
+        }
+    } else {
+        self.x = self.x + self.speed;
+        self.y = self.y;
+        if (self.x > self.ctx.canvas.width) {
+            self.done = true;
+        }
+    }
+
     self.ctx.fillStyle = 'grey';
-    self.ctx.fillRect(self.bulletX, self.bulletY, self.bulletWidth, self.bulletHeight);
-
-
+    self.ctx.fillRect(self.x, self.y, self.width, self.height);
 };
 
 Bullet.prototype.move = function() {
     var self = this;
 
+
     if (self.visible === false) {
 
     } else if (self.visible === true) {
+        console.log("die");
         self.bulletX = self.bulletX + self.speed;
     }
 
