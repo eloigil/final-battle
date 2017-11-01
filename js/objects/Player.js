@@ -72,14 +72,14 @@ Player.prototype.jumpAction = function() {
 
 Player.prototype.land = function() {
     var self = this;
-    clearInterval(self.jump);
+    clearInterval(self.jumpInterval);
 };
 
 Player.prototype.jump = function() {
     var self = this;
 
     self.jumpIndex = true;
-    self.jump = setInterval(function() {
+    self.jumpInterval = setInterval(function() {
         self.jumpAction();
     }, 10);
     console.log("jump done");
