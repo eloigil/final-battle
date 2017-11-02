@@ -1,6 +1,6 @@
 'use strict';
 
-function Player(ctx, color, initialPosition, facingLeft, startsLeft) {
+function Player(ctx, color, initialPosition, facingLeft, startsLeft, champNum) {
     var self = this;
 
     self.ctx = ctx;
@@ -24,10 +24,22 @@ function Player(ctx, color, initialPosition, facingLeft, startsLeft) {
 
     self.maxBulletsAtAnyPoint = 5;
     self.bulletsCount = 0;
+
+    self.champNum = champNum;
+    self.currentChamp = 0;
+    self.andres = new Image();
+    self.andres.src = 'img/Andrés.png';
+    self.loo = new Image();
+    self.loo.src = 'img/mr. loo.png';
+    self.sk = new Image();
+    self.sk.src = 'img/SK.png';
+    self.sb = new Image();
+    self.sb.src = 'img/SuperByro.png';
 }
 
 Player.prototype.draw = function() {
     var self = this;
+    self.currentChamp();
 
     if (self.isJumping) {
         self.y = self.y - self.jumpSpeed;
@@ -41,12 +53,8 @@ Player.prototype.draw = function() {
             self.isFalling = false;
         }
     }
-    //
-    // } else if (self.isJumping === false || self.y <= self.maxJumpHeight && self.y < self.ctx.canvas.height * 0.2) {
-    //     self.isJumping = false;
-    //     self.y = self.y + self.jumpSpeed;
-    // }
 
+    self.drawChamp();
     self.ctx.fillStyle = self.color;
     self.ctx.fillRect(self.x, self.y, self.width, self.height);
 };
@@ -101,4 +109,18 @@ Player.prototype.bulletDone = function() {
     var self = this;
 
     self.bulletsCount--;
+};
+
+Player.prototype.currentChamp = function() {
+    var self = this;
+
+    if (self.champNum === 1) {
+        self.currentChamp = self.andres;
+    } else if (self.champNum === 2) {
+        self.currentChamp = self.loo;
+    } else if (self.champNum === 3) {
+        self.currentChamp = self.sb;
+    } else if (self.champNum === 4) {
+        self.currentChamp = self.sk;
+    }
 };

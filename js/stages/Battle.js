@@ -5,8 +5,8 @@ function Battle(ctx /*charcater1, characater2*/ ) {
 
     self.ctx = ctx;
 
-    self.player1 = new Player(self.ctx, 'red', 0.1, false, true /*, charcater1*/ );
-    self.player2 = new Player(self.ctx, 'blue', 0.8, true, false /*, charcater2*/ );
+    self.player1 = new Player(self.ctx, 'red', 0.1, false, true, 1 /*, charcater1*/ );
+    self.player2 = new Player(self.ctx, 'blue', 0.8, true, false, 2 /*, charcater2*/ );
 
     self.healthBar1 = new HealthBar(self.ctx, true);
     self.healthBar2 = new HealthBar(self.ctx, false);
@@ -16,11 +16,13 @@ function Battle(ctx /*charcater1, characater2*/ ) {
 
     self.battleBackground = new Image();
     self.battleBackground.src = 'img/battleBackground.jpg';
+
 }
 
 Battle.prototype.draw = function() {
     var self = this;
 
+    // self.isDead(self.healthBar1.health, self.healthBar2.health);
     self.ctx.drawImage(self.battleBackground, 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
 
     self.face();
@@ -133,5 +135,22 @@ Battle.prototype.face = function() {
         self.player1.facingLeft = true;
         self.player2.facingLeft = false;
     }
-
 };
+
+// Battle.prototype.isDead = function(hb1, hb2) {
+//     var self = this;
+//
+//     if (hb1 <= 0) {
+//         console.log("dead 1");
+//         self.state = "over";
+//         self.stage = new Over(self.ctx, "player1");
+//         return 1;
+//     } else if (hb2 <= 0) {
+//         console.log("dead 1");
+//         self.state = "over";
+//         self.stage = new Over(self.ctx, "player2");
+//         return 2;
+//     } else {
+//         return 0;
+//     }
+// };

@@ -33,4 +33,7 @@ X jump once
 - add images
 - add animations
 X make bullets reach at same x
+- add timer
+X make it less than 100% width
 . make players collitions ?
+. charSelect

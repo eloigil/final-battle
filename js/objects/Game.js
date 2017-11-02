@@ -10,6 +10,8 @@ function Game(canvas, width, height) {
 
     self.splash();
     self.draw();
+
+    self.over();
 }
 
 Game.prototype.resize = function(width, height) {
@@ -30,6 +32,7 @@ Game.prototype.draw = function() {
     window.requestAnimationFrame(function() {
         self.draw();
     });
+
 };
 
 // --- splash
@@ -64,7 +67,24 @@ Game.prototype.battle = function() {
     function handleKeyDown(event) {
         var keyCode = event.keyCode;
         self.stage.handleKeyDown(keyCode);
+
     }
 
     window.addEventListener("keydown", handleKeyDown);
+};
+
+// --- gameOver
+
+Game.prototype.over = function() {
+    var self = this;
+
+    if (self.battle.healthBar1.health <= 0) {
+        console.log("1dead");
+        self.state = "over";
+        self.stage = new Over(self.ctx, "player1");
+    } else if (self.battle.healthBar2.health <= 0) {
+        console.log("2dead");
+        self.state = "over";
+        self.stage = new Over(self.ctx, "player2");
+    }
 };
