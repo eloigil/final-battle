@@ -12,11 +12,18 @@ function Battle(ctx /*charcater1, characater2*/ ) {
     self.healthBar2 = new HealthBar(self.ctx, false);
 
     self.bullets = [];
+    self.bulletMovingLeft = true;
+
+    self.battleBackground = new Image();
+    self.battleBackground.src = 'img/battleBackground.jpg';
 }
 
 Battle.prototype.draw = function() {
     var self = this;
 
+    self.ctx.drawImage(self.battleBackground, 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
+
+    self.face();
     self.player1.draw();
     self.player2.draw();
 
@@ -51,23 +58,21 @@ Battle.prototype.handleKeyDown = function(keyCode) {
         self.player1.moveLeft();
     } else if (keyCode === 68) {
         self.player1.moveRight();
-    } else if (keyCode === 87) {
+    } else if (keyCode === 87 && !self.player1.isJumping && !self.player1.isFalling) {
         self.player1.jump();
     } else if (keyCode === 83) {
         if (self.player1.canShoot()) {
-            self.bullets.push(new Bullet(self.ctx, self.player1.width, false, self.player1.x, self.player1.y));
+            self.bullets.push(new Bullet(self.ctx, self.player1.width, !self.bulletMovingLeft, self.player1.x, self.player1.y));
         }
     } else if (keyCode === 74) {
         self.player2.moveLeft();
     } else if (keyCode === 76) {
         self.player2.moveRight();
-    } else if (keyCode === 73) {
-        self.player2.jump();
-    } else if (keyCode === 73) {
+    } else if (keyCode === 73 && !self.player2.isJumping && !self.player2.isFalling) {
         self.player2.jump();
     } else if (keyCode === 75) {
         if (self.player2.canShoot()) {
-            self.bullets.push(new Bullet(self.ctx, self.player2.width, true, self.player2.x, self.player2.y));
+            self.bullets.push(new Bullet(self.ctx, self.player2.width, self.bulletMovingLeft, self.player2.x, self.player2.y));
         }
     }
 };
@@ -77,14 +82,14 @@ Battle.prototype.bulletCollision = function() {
 
     self.bullets.forEach(function(bullet) {
         if (bullet.movingLeft === false) {
-            if (bullet.x > self.player2.x && bullet.x < self.player2.x + self.player2.width) {
+            if (bullet.x + bullet.width > self.player2.x && bullet.x + bullet.width < self.player2.x + self.player2.width) {
                 if (bullet.y > self.player2.y && bullet.y < self.player2.y + self.player2.height) {
                     bullet.done = true;
                     if (self.healthBar2.health > 0) {
                         self.healthBar2.health -= 10;
                     }
                 }
-            } else if (bullet.x > self.player1.x && bullet.x < self.player1.x + self.player1.width) { //// it can collide in both directions if players switch orientation
+            } else if (bullet.x + bullet.width > self.player1.x && bullet.x + bullet.width < self.player1.x + self.player1.width) { //// it can collide in both directions if players switch orientation
                 if (bullet.y > self.player1.y && bullet.y < self.player1.y + self.player1.height) {
                     bullet.done = true;
                     if (self.healthBar1.health > 0) {
@@ -114,5 +119,19 @@ Battle.prototype.bulletCollision = function() {
             }
         }
     });
+};
+
+Battle.prototype.face = function() {
+    var self = this;
+    if (self.player1.x < self.player2.x) {
+        self.bulletMovingLeft = true;
+        self.player1.facingLeft = false;
+        self.player2.facingLeft = true;
+
+    } else if (self.player1.x > self.player2.x) {
+        self.bulletMovingLeft = false;
+        self.player1.facingLeft = true;
+        self.player2.facingLeft = false;
+    }
 
 };

@@ -23,4 +23,14 @@ X loose life
 X learn how to draw images
 X make lifebar changing colors
 
-- make collitions with margins
+X make collitions with margins
+X allow orientation switch
+
+//// Day 4
+X jump once
+- add game over stage
+- add sounds
+- add images
+- add animations
+X make bullets reach at same x
+. make players collitions ?

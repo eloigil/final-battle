@@ -10,6 +10,7 @@
     "window": true,
     "Over": true,
     "Battle": true,
-    "Splash": true
+    "Splash": true,
+    "Image": true
   }
 }

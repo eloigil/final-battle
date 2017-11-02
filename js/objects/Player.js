@@ -6,7 +6,6 @@ function Player(ctx, color, initialPosition, facingLeft, startsLeft) {
     self.ctx = ctx;
 
     self.speed = self.ctx.canvas.width * 0.1;
-    self.facingLeft = facingLeft;
     self.startsLeft = startsLeft;
 
     self.color = color;
@@ -15,7 +14,7 @@ function Player(ctx, color, initialPosition, facingLeft, startsLeft) {
     self.height = self.ctx.canvas.height * 0.2;
 
     self.x = self.ctx.canvas.width * initialPosition;
-    self.y = self.ctx.canvas.height - self.height;
+    self.y = self.ctx.canvas.height - self.height * 1.3;
 
     self.isJumping = false;
     self.isFalling = false;
@@ -38,7 +37,7 @@ Player.prototype.draw = function() {
         }
     } else if (self.isFalling) {
         self.y = self.y + self.jumpSpeed;
-        if (self.y > self.ctx.canvas.height - self.height * 1.05) {
+        if (self.y * 1.01 > self.ctx.canvas.height - self.height * 1.3) {
             self.isFalling = false;
         }
     }
@@ -88,6 +87,7 @@ Player.prototype.jump = function() {
         self.isJumping = true;
     }
 };
+
 
 Player.prototype.canShoot = function() {
     var self = this;

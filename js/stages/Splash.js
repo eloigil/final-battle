@@ -12,6 +12,9 @@ function Splash(ctx) {
 
     self.splashBackground = new Image();
     self.splashBackground.src = 'img/splash.jpg';
+
+    self.spacebar = new Image();
+    self.spacebar.src = 'img/spacebar.png';
 }
 
 Splash.prototype.draw = function() {
@@ -19,10 +22,10 @@ Splash.prototype.draw = function() {
 
     self.x = self.x + self.speed;
     if (self.x > self.ctx.canvas.width * 0.73 - self.width) {
-        self.speed = -0.5;
+        self.speed = -0.2;
     }
     if (self.x < self.ctx.canvas.width * 0.27) {
-        self.speed = 0.5;
+        self.speed = 0.2;
     }
 
     var x = self.x;
@@ -32,6 +35,6 @@ Splash.prototype.draw = function() {
 
 
     self.ctx.drawImage(self.splashBackground, 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
-    self.ctx.fillStyle = "green";
-    self.ctx.fillRect(x, y, width, height);
+    self.ctx.drawImage(self.spacebar, x, y, width, height);
+
 };
