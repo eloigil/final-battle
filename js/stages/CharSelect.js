@@ -34,6 +34,9 @@ function CharSelect(ctx) {
     self.currentChamp1 = null;
     self.currentChamp2 = null;
 
+    self.currentNameArray1 = [0, "Don Andres", "Mr. Loo", "KS Zak", "Super Byro"];
+    self.currentNameArray2 = [0, "Don Andres", "Mr. Loo", "KS Zak", "Super Byro"];
+
     function handleKeyDownSelect(event) {
         var keyCode = event.keyCode;
         if (keyCode === 65) {
@@ -73,8 +76,12 @@ CharSelect.prototype.draw = function() {
     self.ctx.drawImage(self.back, 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
     self.select();
     self.drawAll();
+    self.ctx.fillStyle = "red";
+    self.ctx.font = "50px NewCourier";
     self.ctx.drawImage(self.currentChamp1, self.ctx.canvas.width * 0.2, self.ctx.canvas.height * 0.4, self.ctx.canvas.width * 0.2, self.ctx.canvas.height * 0.5);
+    self.ctx.fillText(self.currentName1, self.ctx.canvas.width * 0.23, self.ctx.canvas.height * 0.97);
     self.ctx.drawImage(self.currentChamp2, self.ctx.canvas.width * 0.6, self.ctx.canvas.height * 0.4, self.ctx.canvas.width * 0.2, self.ctx.canvas.height * 0.5);
+    self.ctx.fillText(self.currentName2, self.ctx.canvas.width * 0.6, self.ctx.canvas.height * 0.97);
 };
 
 
@@ -97,7 +104,9 @@ CharSelect.prototype.select = function() {
     var self = this;
 
     self.currentChamp1 = self.currentChampArray1[self.player1Counter];
+    self.currentName1 = self.currentNameArray1[self.player1Counter];
     self.currentChamp2 = self.currentChampArray2[self.player2Counter];
+    self.currentName2 = self.currentNameArray2[self.player2Counter];
 
 };
 
