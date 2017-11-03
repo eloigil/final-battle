@@ -11,6 +11,9 @@
     "Over": true,
     "Battle": true,
     "Splash": true,
-    "Image": true
+    "Image": true,
+    "CharSelect": true,
+    "setTimeout":true,
+    "Audio":true
   }
 }

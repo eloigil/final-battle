@@ -7,11 +7,14 @@ function Player(ctx, color, initialPosition, facingLeft, startsLeft, champNum) {
 
     self.speed = self.ctx.canvas.width * 0.1;
     self.startsLeft = startsLeft;
+    self.facingLeft = facingLeft;
+
+    // console.log(champNum);
 
     self.color = color;
 
     self.width = self.ctx.canvas.width * 0.1;
-    self.height = self.ctx.canvas.height * 0.2;
+    self.height = self.ctx.canvas.height * 0.25;
 
     self.x = self.ctx.canvas.width * initialPosition;
     self.y = self.ctx.canvas.height - self.height * 1.3;
@@ -26,20 +29,29 @@ function Player(ctx, color, initialPosition, facingLeft, startsLeft, champNum) {
     self.bulletsCount = 0;
 
     self.champNum = champNum;
-    self.currentChamp = 0;
-    self.andres = new Image();
-    self.andres.src = 'img/Andrés.png';
-    self.loo = new Image();
-    self.loo.src = 'img/mr. loo.png';
-    self.sk = new Image();
-    self.sk.src = 'img/SK.png';
-    self.sb = new Image();
-    self.sb.src = 'img/SuperByro.png';
+    self.currentChamp = null;
+    self.andresLeft = new Image();
+    self.andresLeft.src = 'img/andresLeft.png';
+    self.looLeft = new Image();
+    self.looLeft.src = 'img/mrlooLeft.png';
+    self.zakLeft = new Image();
+    self.zakLeft.src = 'img/zakLeft.png';
+    self.sbLeft = new Image();
+    self.sbLeft.src = 'img/superbyroLeft.png';
+
+    self.andresRight = new Image();
+    self.andresRight.src = 'img/andresRight.png';
+    self.looRight = new Image();
+    self.looRight.src = 'img/mrlooRight.png';
+    self.zakRight = new Image();
+    self.zakRight.src = 'img/zakRight.png';
+    self.sbRight = new Image();
+    self.sbRight.src = 'img/superbyroRight.png';
 }
 
 Player.prototype.draw = function() {
+
     var self = this;
-    self.currentChamp();
 
     if (self.isJumping) {
         self.y = self.y - self.jumpSpeed;
@@ -54,9 +66,10 @@ Player.prototype.draw = function() {
         }
     }
 
+
+    // self.ctx.fillStyle = self.color;
+    // self.ctx.fillRect(self.x, self.y, self.width, self.height);
     self.drawChamp();
-    self.ctx.fillStyle = self.color;
-    self.ctx.fillRect(self.x, self.y, self.width, self.height);
 };
 
 
@@ -64,11 +77,11 @@ Player.prototype.moveRight = function() {
     var self = this;
 
     if (self.startsLeft === false) {
-        if (self.x < self.ctx.canvas.width - self.width) {
+        if (self.x + self.width < self.ctx.canvas.width - self.ctx.canvas.width * 0.001) {
             self.x = self.x + self.speed;
         }
     } else if (self.startsLeft === true) {
-        if (self.x + self.width < self.ctx.canvas.width) {
+        if (self.x + self.width < self.ctx.canvas.width - self.ctx.canvas.width * 0.001) {
             self.x = self.x + self.speed;
         }
     }
@@ -77,11 +90,11 @@ Player.prototype.moveRight = function() {
 Player.prototype.moveLeft = function() {
     var self = this;
     if (self.startsLeft === true) {
-        if (self.x > 0) {
+        if (self.x > 1) {
             self.x = self.x - self.speed;
         }
     } else if (self.startsLeft === false) {
-        if (self.x > 0) {
+        if (self.x > 1) {
             self.x = self.x - self.speed;
         }
     }
@@ -101,6 +114,7 @@ Player.prototype.canShoot = function() {
     var self = this;
     if (self.bulletsCount < self.maxBulletsAtAnyPoint) {
         self.bulletsCount++;
+        // console.log(self.bulletsCount);
         return true;
     }
 };
@@ -111,16 +125,30 @@ Player.prototype.bulletDone = function() {
     self.bulletsCount--;
 };
 
-Player.prototype.currentChamp = function() {
+Player.prototype.drawChamp = function() {
     var self = this;
 
-    if (self.champNum === 1) {
-        self.currentChamp = self.andres;
-    } else if (self.champNum === 2) {
-        self.currentChamp = self.loo;
-    } else if (self.champNum === 3) {
-        self.currentChamp = self.sb;
-    } else if (self.champNum === 4) {
-        self.currentChamp = self.sk;
+    if (self.facingLeft === false) {
+        if (self.champNum === 1) {
+            self.currentChamp = self.andresRight;
+        } else if (self.champNum === 2) {
+            self.currentChamp = self.looRight;
+        } else if (self.champNum === 4) {
+            self.currentChamp = self.sbRight;
+        } else if (self.champNum === 3) {
+            self.currentChamp = self.zakRight;
+        }
+
+    } else if (self.facingLeft) {
+        if (self.champNum === 1) {
+            self.currentChamp = self.andresLeft;
+        } else if (self.champNum === 2) {
+            self.currentChamp = self.looLeft;
+        } else if (self.champNum === 4) {
+            self.currentChamp = self.sbLeft;
+        } else if (self.champNum === 3) {
+            self.currentChamp = self.zakLeft;
+        }
     }
+    self.ctx.drawImage(self.currentChamp, self.x, self.y, self.width, self.height);
 };

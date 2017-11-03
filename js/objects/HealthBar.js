@@ -8,7 +8,7 @@ function HealthBar(ctx, left) {
     self.side = left;
 
     self.hbx = self.ctx.canvas.width * 0.55;
-    self.hby = self.ctx.canvas.height * 0.05;
+    self.hby = self.ctx.canvas.height * 0.03;
 
 }
 
@@ -16,7 +16,7 @@ HealthBar.prototype.draw = function() {
     var self = this;
 
     self.hbWidth = self.ctx.canvas.width * 0.4 * self.health / 100;
-    self.hbHeight = self.ctx.canvas.height * 0.05;
+    self.hbHeight = self.ctx.canvas.height * 0.03;
 
     if (self.side === true) {
         self.ctx.transform(-1, 0, 0, 1, 0, 0);

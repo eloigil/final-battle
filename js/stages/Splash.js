@@ -13,6 +13,9 @@ function Splash(ctx) {
     self.splashBackground = new Image();
     self.splashBackground.src = 'img/splash.jpg';
 
+    self.splashBackground = new Image();
+    self.splashBackground.src = 'img/splash.jpg';
+
     self.spacebar = new Image();
     self.spacebar.src = 'img/spacebar.png';
 }

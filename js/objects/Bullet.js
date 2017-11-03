@@ -10,8 +10,8 @@ function Bullet(ctx, playerWidth, movingLeft, x, y) {
     self.speed = 6;
     self.movingLeft = movingLeft;
 
-    self.width = self.ctx.canvas.width * 0.12;
-    self.height = self.ctx.canvas.height * 0.08;
+    self.width = self.ctx.canvas.width * 0.10;
+    self.height = self.ctx.canvas.height * 0.06;
 
     self.gitInitLeft = new Image();
     self.gitInitLeft.src = 'img/gitInitLeft.png';
@@ -27,14 +27,14 @@ Bullet.prototype.draw = function() {
     if (self.movingLeft) {
         self.x = self.x - self.speed;
         self.y = self.y;
-        if (self.x < 0) {
+        if (self.x <= 0) {
             self.done = true;
 
         }
     } else {
         self.x = self.x + self.speed;
         self.y = self.y;
-        if (self.x > self.ctx.canvas.width) {
+        if (self.x + self.width >= self.ctx.canvas.width) {
             self.done = true;
         }
     }

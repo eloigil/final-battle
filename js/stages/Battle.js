@@ -1,12 +1,17 @@
 'use strict';
 
-function Battle(ctx /*charcater1, characater2*/ ) {
+function Battle(ctx, champ1, champ2 /*charcater1, characater2*/ ) {
     var self = this;
 
     self.ctx = ctx;
 
-    self.player1 = new Player(self.ctx, 'red', 0.1, false, true, 1 /*, charcater1*/ );
-    self.player2 = new Player(self.ctx, 'blue', 0.8, true, false, 2 /*, charcater2*/ );
+    self.champ1 = champ1;
+    self.champ2 = champ2;
+
+    // console.log(self.champ1 + self.champ2);
+
+    self.player1 = new Player(self.ctx, 'red', 0.1, false, true, self.champ1 /*, charcater1*/ );
+    self.player2 = new Player(self.ctx, 'blue', 0.8, true, false, self.champ2 /*, charcater2*/ );
 
     self.healthBar1 = new HealthBar(self.ctx, true);
     self.healthBar2 = new HealthBar(self.ctx, false);
@@ -17,12 +22,19 @@ function Battle(ctx /*charcater1, characater2*/ ) {
     self.battleBackground = new Image();
     self.battleBackground.src = 'img/battleBackground.jpg';
 
+    self.isOver = 0;
+
 }
 
 Battle.prototype.draw = function() {
     var self = this;
 
-    // self.isDead(self.healthBar1.health, self.healthBar2.health);
+    if (self.healthBar2.health === 0) {
+        self.isOver = 1;
+    }
+    if (self.healthBar1.health === 0) {
+        self.isOver = 2;
+    }
     self.ctx.drawImage(self.battleBackground, 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
 
     self.face();
@@ -47,10 +59,9 @@ Battle.prototype.draw = function() {
         }
     });
 
-    console.log(self.bullets.length);
-
     self.healthBar2.draw();
     self.healthBar1.draw();
+
 };
 
 Battle.prototype.handleKeyDown = function(keyCode) {
@@ -66,7 +77,8 @@ Battle.prototype.handleKeyDown = function(keyCode) {
         if (self.player1.canShoot()) {
             self.bullets.push(new Bullet(self.ctx, self.player1.width, !self.bulletMovingLeft, self.player1.x, self.player1.y));
         }
-    } else if (keyCode === 74) {
+    }
+    if (keyCode === 74) {
         self.player2.moveLeft();
     } else if (keyCode === 76) {
         self.player2.moveRight();
@@ -82,16 +94,19 @@ Battle.prototype.handleKeyDown = function(keyCode) {
 Battle.prototype.bulletCollision = function() {
     var self = this;
 
+
     self.bullets.forEach(function(bullet) {
         if (bullet.movingLeft === false) {
             if (bullet.x + bullet.width > self.player2.x && bullet.x + bullet.width < self.player2.x + self.player2.width) {
                 if (bullet.y > self.player2.y && bullet.y < self.player2.y + self.player2.height) {
                     bullet.done = true;
+
                     if (self.healthBar2.health > 0) {
                         self.healthBar2.health -= 10;
                     }
                 }
-            } else if (bullet.x + bullet.width > self.player1.x && bullet.x + bullet.width < self.player1.x + self.player1.width) { //// it can collide in both directions if players switch orientation
+            }
+            if (bullet.x + bullet.width > self.player1.x && bullet.x + bullet.width < self.player1.x + self.player1.width) { //// it can collide in both directions if players switch orientation
                 if (bullet.y > self.player1.y && bullet.y < self.player1.y + self.player1.height) {
                     bullet.done = true;
                     if (self.healthBar1.health > 0) {
@@ -101,7 +116,8 @@ Battle.prototype.bulletCollision = function() {
                 }
             }
 
-        } else if (bullet.movingLeft === true) {
+        }
+        if (bullet.movingLeft === true) {
             if (bullet.x < self.player1.x + self.player1.width && bullet.x > self.player1.x) {
                 if (bullet.y > self.player1.y && bullet.y < self.player1.y + self.player1.height) {
                     bullet.done = true;
@@ -110,7 +126,8 @@ Battle.prototype.bulletCollision = function() {
                     }
 
                 }
-            } else if (bullet.x < self.player2.x + self.player2.width && bullet.x > self.player2.x) {
+            }
+            if (bullet.x < self.player2.x + self.player2.width && bullet.x > self.player2.x) {
                 if (bullet.y > self.player2.y && bullet.y < self.player2.y + self.player2.height) {
                     bullet.done = true;
                     if (self.healthBar2.health > 0) {
@@ -136,21 +153,3 @@ Battle.prototype.face = function() {
         self.player2.facingLeft = false;
     }
 };
-
-// Battle.prototype.isDead = function(hb1, hb2) {
-//     var self = this;
-//
-//     if (hb1 <= 0) {
-//         console.log("dead 1");
-//         self.state = "over";
-//         self.stage = new Over(self.ctx, "player1");
-//         return 1;
-//     } else if (hb2 <= 0) {
-//         console.log("dead 1");
-//         self.state = "over";
-//         self.stage = new Over(self.ctx, "player2");
-//         return 2;
-//     } else {
-//         return 0;
-//     }
-// };
