@@ -13,8 +13,8 @@ function Splash(ctx) {
     self.splashBackground = new Image();
     self.splashBackground.src = 'img/splash.jpg';
 
-    self.splashBackground = new Image();
-    self.splashBackground.src = 'img/splash.jpg';
+    self.tittle = new Image();
+    self.tittle.src = 'img/tittle.png';
 
     self.spacebar = new Image();
     self.spacebar.src = 'img/spacebar.png';
@@ -38,6 +38,7 @@ Splash.prototype.draw = function() {
 
 
     self.ctx.drawImage(self.splashBackground, 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
+    self.ctx.drawImage(self.tittle, self.ctx.canvas.width * 0.1, 0, width * 2, height * 2);
     self.ctx.drawImage(self.spacebar, x, y, width, height);
 
 };
